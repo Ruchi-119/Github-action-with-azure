@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJuaXRlc2gxOTg3IiwicGFzc3dvcmQiOiJEciMkNTkqaXB0ayIsImVtYWlsIjoiamFpbm5pdGVzaDE5ODdAZ21haWwuY29tIiwiYXV0aCI6ImJtbDBaWE5vTVRrNE56cEVjaU1rTlRrcWFYQjBhdz09In19fQ==
+kind: Secret
+metadata:
+  creationTimestamp: "2022-03-24T20:34:10Z"
+  name: mycred
+  namespace: default
+  resourceVersion: "21675"
+  uid: dded4972-98c0-4cad-8bfa-55f264f52a9b
+type: kubernetes.io/dockerconfigjson

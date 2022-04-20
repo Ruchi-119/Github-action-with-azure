@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend-app
+  template:
+    metadata:
+      labels:
+        app: frontend-app
+    spec:
+      containers:
+      - name: frontend-app
+        image: tmlproddrishtiacr.azurecr.io/tml-frontend:2.0.0
+        ports:
+        - containerPort: 3000    
+      imagePullSecrets:
+      - name: acrkey 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-app
+  template:
+    metadata:
+      labels:
+        app: backend-app
+    spec:
+      containers:
+      - name: backend-app
+        image: tmlproddrishtiacr.azurecr.io/tml-backend:9.0.3
+        ports:
+        - containerPort: 3002
+      imagePullSecrets:
+      - name: acrkey
+        
