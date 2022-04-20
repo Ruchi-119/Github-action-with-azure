@@ -3,66 +3,22 @@ on:
   push:
     tags:
       - '*'
-
+# Environment variables available to all jobs and steps in this workflow
+env:
+  REGISTRY_NAME: HCacr001
+  CLUSTER_NAME: hcaks001
+  CLUSTER_RESOURCE_GROUP: Ruchi_RG
+  NAMESPACE: dev
+  SECRET: new
+  APP_NAME: newapp
+  
 jobs:
-  deploy:
-    name: Deploy application
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Azure Login
-        uses: Azure/login@v1.4.3
-        with:
-         client-id: "656e639e-8146-4a5f-8b38-a62d64f711b2"
-            # TenantId of the Azure Service principal created.
-         tenant-id: "e4e34038-ea1f-4882-b6e8-ccd776459ca0"
-            # Azure subscriptionId
-         subscription-id: "9d08fcd9-b6df-4a2f-9697-0414d8838111"
-            # Set this value to true to enable Azure PowerShell Login in addition to Az CLI login
-      - name: az set context
-        env:
-         CLUSTER_NAME: hcaks001
-         RESOURCE_GROUP: Ruchi_RG
-      - uses: azure/aks-set-context@v1
-        with:
-          creds: '${{ secrets.azcred }}'
-          cluster-name: ${{ env.CLUSTER_NAME }}
-          resource-group: ${{ env.RESOURCE_GROUP }}
-      - name: Checkout repo
-        uses: actions/checkout@v2
-      - name: Build image
-        env:
-         REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-        run: make build
-      - name: Login to container registry
-        env:
-          SERVICE_PRINCIPAL_APP_ID: ${{ secrets.SERVICE_PRINCIPAL_APP_ID }}
-          SERVICE_PRINCIPAL_SECRET: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
-          SERVICE_PRINCIPAL_TENANT: ${{ secrets.SERVICE_PRINCIPAL_TENANT }}
-          ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
-          CLUSTER_NAME: hcaks001
-          RESOURCE_GROUP: Ruchi_RG
-          
-        run: make registry-login
-      - name: Push image
-        env:
-          ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
-        run: make push
-      - uses: azure/aks-set-context@v1
-        with:
-          creds: '${{ secrets.azcred }}'
-          cluster-name: ${{ env.CLUSTER_NAME }}
-          resource-group: ${{ env.RESOURCE_GROUP }}
-      - name: Get AKS credentials
-        env:
-          CLUSTER_RESOURCE_GROUP_NAME: ${{ secrets.CLUSTER_RESOURCE_GROUP_NAME }}
-          CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
-        run: |
-          az aks get-credentials \
-            --resource-group $CLUSTER_RESOURCE_GROUP_NAME \
-            --name $CLUSTER_NAME \
-            --overwrite-existing
-      - name: Deploy application
-        env:
-          ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
-        run: make deploy
+    - uses: actions/checkout@main
+    - uses: azure/aks-set-context@v1
+      with:
+        creds: '${{ secrets.azcred }}'
+        cluster-name: ${{ env.CLUSTER_NAME }}
+        resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
