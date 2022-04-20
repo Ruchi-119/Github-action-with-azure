@@ -27,7 +27,7 @@ jobs:
     - run: |
         docker build . -t ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
         docker push ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-      working-directory: ./Dockerfile
+      working-directory: .
     - uses: azure/aks-set-context@v1
       with:
         creds: '${{ secrets.azcred }}'
