@@ -8,7 +8,7 @@ env:
   REGISTRY_NAME: HCacr001
   CLUSTER_NAME: hcaks001
   CLUSTER_RESOURCE_GROUP: Ruchi_RG
-  NAMESPACE: dev
+  NAMESPACE: default
   SECRET: new
   APP_NAME: newapp
   
@@ -22,8 +22,6 @@ jobs:
         creds: '${{ secrets.azcred }}'
         cluster-name: ${{ env.CLUSTER_NAME }}
         resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
-    - run: |
-        kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
     - uses: azure/k8s-create-secret@v1
       with:
         container-registry-url: ${{ env.REGISTRY_NAME }}.azurecr.io
