@@ -21,11 +21,19 @@ jobs:
           SERVICE_PRINCIPAL_SECRET: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
           SERVICE_PRINCIPAL_TENANT: ${{ secrets.SERVICE_PRINCIPAL_TENANT }}
           ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
+          CLUSTER_NAME: hcaks001
+          RESOURCE_GROUP: Ruchi_RG
+          
         run: make registry-login
       - name: Push image
         env:
           ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
         run: make push
+      - uses: azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.azcred }}'
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          resource-group: ${{ env.RESOURCE_GROUP }}
       - name: Get AKS credentials
         env:
           CLUSTER_RESOURCE_GROUP_NAME: ${{ secrets.CLUSTER_RESOURCE_GROUP_NAME }}
