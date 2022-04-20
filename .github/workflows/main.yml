@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: az set context
+        env:
+         CLUSTER_NAME: hcaks001
+         RESOURCE_GROUP: Ruchi_RG
       - uses: azure/aks-set-context@v1
         with:
           creds: '${{ secrets.azcred }}'
