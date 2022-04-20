@@ -13,18 +13,18 @@ jobs:
         uses: actions/checkout@v2
       - name: Build image
         env:
-          ACR_NAME: ${{ secrets.ACR_NAME }}
+          ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
         run: make build
       - name: Login to container registry
         env:
           SERVICE_PRINCIPAL_APP_ID: ${{ secrets.SERVICE_PRINCIPAL_APP_ID }}
           SERVICE_PRINCIPAL_SECRET: ${{ secrets.SERVICE_PRINCIPAL_SECRET }}
           SERVICE_PRINCIPAL_TENANT: ${{ secrets.SERVICE_PRINCIPAL_TENANT }}
-          ACR_NAME: ${{ secrets.ACR_NAME }}
+          ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
         run: make registry-login
       - name: Push image
         env:
-          ACR_NAME: ${{ secrets.ACR_NAME }}
+          ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
         run: make push
       - name: Get AKS credentials
         env:
@@ -37,5 +37,5 @@ jobs:
             --overwrite-existing
       - name: Deploy application
         env:
-          ACR_NAME: ${{ secrets.ACR_NAME }}
+          ACR_NAME: ${{ secrets.REGISTRY_USERNAME }}
         run: make deploy
